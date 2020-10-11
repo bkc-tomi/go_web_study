@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Username}}</title>
+</head>
+<body>
+    <h1>ようこそ{{.Username}}さん</h1>
+    <p>年齢：{{.Age}}</p>
+    <p>性別：{{.Gender}}</p>
+    <p>好きなフルーツ：{{.Fruit}}</p>
+    <p>好きなスポーツ</p>
+    <ul>
+        {{range $var := .Interest}}
+            <li>{{$var}}</li>
+        {{end}}
+    </ul>
+</body>
+</html>

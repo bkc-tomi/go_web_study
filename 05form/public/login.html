@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Form</title>
+</head>
+<body>
+    <form action="/login" method="POST">
+        名前(必須)：<input type="text" name="username">
+        <br />
+        年齢　　  ：<input type="text" name="age">
+        <br />
+        <input type="radio" name="gender" value="1">男
+        <input type="radio" name="gender" value="2">女
+        <br />
+        好きなフルーツ
+        <select name="fruit">
+            <option value="apple">apple</option>
+            <option value="pear">pear</option>
+            <option value="banane">banane</option>
+        </select>
+        <br/>
+        好きなスポーツ(複数選択)
+        <br/>
+        <input type="checkbox" name="interest" value="football">サッカー
+        <input type="checkbox" name="interest" value="baseball">野球
+        <input type="checkbox" name="interest" value="basketball">バスケットボール
+        <input type="checkbox" name="interest" value="tennis">テニス
+        <br/>
+        <input type="submit" value="送信">
+        <br />
+        <p>{{ .Message }}</p>
+    </form>
+</body>
+</html>
