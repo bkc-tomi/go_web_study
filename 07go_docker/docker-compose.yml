@@ -1,0 +1,20 @@
+version: "3" # composeファイルのバージョン
+services: 
+    app: # サービス名
+        build: . # ビルドに使うDockerfileの場所
+        tty: true # コンテナの永続化
+        ports: # ホストOSのポートとコンテナのポートをつなげる 
+            - "8080:8080"
+        volumes:
+            - ./app:/go/src/app # マウントディレクトリ
+        # depends_on: 
+        #     - db
+
+    # db:
+    #     image: mysql:8.0
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: golang
+    #         MYSQL_USER: golang # 使わないけど一応記述
+    #         MYSQL_PASSWORD: golang # 使わないけど一応記述
+    #         MYSQL_DATABASE: golang # 使わないけど一応記述
+    #     container_name: mysql-container
