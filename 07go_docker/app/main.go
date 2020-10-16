@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"html/template"
 	"log"
 	"net/http"
 	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // Embed htmlファイルに埋め込むデータ構造体
@@ -14,11 +17,23 @@ type Embed struct {
 	Time    time.Time
 }
 
+const (
+	DRIVER_NAME = "mysql" // ドライバ名(mysql固定)
+	// user:password@tcp(container-name:port)/dbname ※mysql はデフォルトで用意されているDB
+	DATA_SOURCE_NAME = "root:golang@tcp(mysql-container:3306)/mysql"
+)
+
 var templates = make(map[string]*template.Template)
 
 func main() {
+	// database
+	db, err := sql.Open(DRIVER_NAME, DATA_SOURCE_NAME)
+	if err != nil {
+		log.Print("error connecting to database:", err)
+	}
+	log.Print(db)
+	// web_server
 	port := "8080"
-
 	templates["index"] = loadTemplate("index")
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 

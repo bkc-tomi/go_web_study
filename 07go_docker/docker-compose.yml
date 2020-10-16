@@ -7,14 +7,14 @@ services:
             - "8080:8080"
         volumes:
             - ./app:/go/src/app # マウントディレクトリ
-        # depends_on: 
-        #     - db
+        depends_on: 
+            - mysql
 
-    # db:
-    #     image: mysql:8.0
-    #     environment:
-    #         MYSQL_ROOT_PASSWORD: golang
-    #         MYSQL_USER: golang # 使わないけど一応記述
-    #         MYSQL_PASSWORD: golang # 使わないけど一応記述
-    #         MYSQL_DATABASE: golang # 使わないけど一応記述
-    #     container_name: mysql-container
+    mysql:
+        build: ./mysql/
+        volumes:
+            - ./mysql/db:/docker-entrypoint-initdb.d  #初期データをマウントする場所
+        environment: 
+            - MYSQL_ROOT_PASSWORD=golang
+        ports:
+            - "3306:3306"
