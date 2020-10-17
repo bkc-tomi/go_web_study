@@ -13,8 +13,12 @@ services:
     mysql:
         build: ./mysql/
         volumes:
-            - ./mysql/db:/docker-entrypoint-initdb.d  #初期データをマウントする場所
+            # 初期データを投入するSQLが格納されているdir
+            - ./mysql/init:/docker-entrypoint-initdb.d
+            # 永続化するときにマウントするdir
+            - ./mysql/data:/var/lib/mysql
         environment: 
             - MYSQL_ROOT_PASSWORD=golang
         ports:
             - "3306:3306"
+        # container_name: mysql-container
