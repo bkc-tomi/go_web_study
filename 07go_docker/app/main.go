@@ -14,36 +14,62 @@ import (
 type Embed struct {
 	Title   string
 	Message string
+	Users   map[int]User
 	Time    time.Time
 }
 
+// User db users
+type User struct {
+	ID       int
+	Name     string
+	Password string
+}
+
 const (
-	DRIVER_NAME = "mysql" // ドライバ名(mysql固定)
-	// user:password@tcp(container-name:port)/dbname ※mysql はデフォルトで用意されているDB
-	DATA_SOURCE_NAME = "root:golang@tcp(mysql-container:3306)/mysql"
+	// DriverName ドライバ名(mysql固定)
+	DriverName = "mysql"
+	// DataSourceName user:password@tcp(container-name:port)/dbname
+	DataSourceName = "root:golang@tcp(mysql-container:3306)/golang_db"
 )
 
+var usr = make(map[int]User)
 var templates = make(map[string]*template.Template)
 
 func main() {
 	// database
-	db, err := sql.Open(DRIVER_NAME, DATA_SOURCE_NAME)
-	if err != nil {
-		log.Print("error connecting to database:", err)
+	db, dbErr := sql.Open(DriverName, DataSourceName)
+	if dbErr != nil {
+		log.Print("error connecting to database:", dbErr)
 	}
-	log.Print(db)
+	defer db.Close()
+	rows, queryErr := db.Query("SELECT * FROM users")
+	if queryErr != nil {
+		log.Print("query error :", queryErr)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var u User
+		if err := rows.Scan(&u.ID, &u.Name, &u.Password); err != nil {
+			log.Print(err)
+		}
+		usr[u.ID] = User{
+			ID:       u.ID,
+			Name:     u.Name,
+			Password: u.Password,
+		}
+	}
 	// web_server
 	port := "8080"
 	templates["index"] = loadTemplate("index")
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
-	http.HandleFunc("/index", handleIndex)
+	http.HandleFunc("/", handleIndex)
 	log.Printf("Server listening on http://localhost:%s/", port)
 	log.Print(http.ListenAndServe(":"+port, nil))
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
-	temp := Embed{"Hello Golang!", "こんにちは！", time.Now()}
+	temp := Embed{"Hello Golang!", "こんにちは！", usr, time.Now()}
 	if err := templates["index"].Execute(w, temp); err != nil {
 		log.Printf("failed to execute template: %v", err)
 	}

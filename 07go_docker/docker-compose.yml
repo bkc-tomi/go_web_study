@@ -21,4 +21,4 @@ services:
             - MYSQL_ROOT_PASSWORD=golang
         ports:
             - "3306:3306"
-        # container_name: mysql-container
+        container_name: mysql-container
