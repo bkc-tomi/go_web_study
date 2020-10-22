@@ -1,0 +1,3 @@
+# docker-composeと共に自動生成されます。
+mysql/data/*
+app/main
