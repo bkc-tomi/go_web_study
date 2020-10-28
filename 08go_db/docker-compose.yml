@@ -17,7 +17,7 @@ services:
             - ./mysql/data:/var/lib/mysql
         environment: 
             - MYSQL_ROOT_PASSWORD=golang
-            # -  TZ=Asia/Tokyo
+            -  TZ=Asia/Tokyo
         ports:
             - "3306:3306"
         container_name: mysql-container

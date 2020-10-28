@@ -11,5 +11,5 @@ ADD . /go/src/app
 
 RUN go get github.com/oxequa/realize \
     && go get github.com/go-sql-driver/mysql
-
-CMD ["realize", "start"]
+# この設定がないとgo testが出来ない。
+ENV CGO_ENABLED=0

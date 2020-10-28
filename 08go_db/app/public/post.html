@@ -8,9 +8,10 @@
 <body>
     <h1>登録ページ</h1>
     <a href="/">掲示板</a>
-    <form action="/login" method="POST">
+    <form action="/post" method="POST">
         <input type="text" name="posttext" />
         <input type="submit" value="投稿" />
+        <p>{{.Message}}</p>
     </form>
 </body>
 </html>
