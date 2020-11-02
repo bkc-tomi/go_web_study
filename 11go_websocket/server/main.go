@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,25 +10,41 @@ import (
 	"golang.org/x/net/websocket"
 )
 
+var conns list.List
+
 func echo(ws *websocket.Conn) {
 	var err error
-
+	var conn *list.Element
+	contain := false
+	for c := conns.Front(); c != nil; c = c.Next() {
+		if c.Value == ws {
+			contain = true
+		}
+	}
+	if !contain {
+		conn = conns.PushBack(ws)
+	}
 	for {
 		var reply string
+		clientHost := ws.Config().Origin
 
 		if err = websocket.Message.Receive(ws, &reply); err != nil {
-			fmt.Println("cant recieve")
+			conns.Remove(conn)
+			ws.Close()
+			fmt.Println("cant recieve", clientHost)
 			break
 		}
 
 		fmt.Println("Recieve back from client:", reply)
-
-		msg := "Recieved:" + reply + "at:" + string(time.Now().Format("2006/1/2 15:04:05"))
+		msg := "Recieved:" + reply + "from:" + clientHost.Host + "at:" + string(time.Now().Format("2006/1/2 15:04:05"))
 		fmt.Println("Sending to client:", msg)
 
-		if err = websocket.Message.Send(ws, msg); err != nil {
-			fmt.Println("cant send.")
-			break
+		for c := conns.Front(); c != nil; c = c.Next() {
+			if err = websocket.Message.Send(c.Value.(*websocket.Conn), msg); err != nil {
+				fmt.Println("cant send.")
+				break
+			}
+			reply = ""
 		}
 
 	}
