@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"time"
 )
 
 func main() {
@@ -15,18 +16,22 @@ func main() {
 
 	service := os.Args[1]
 	tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
+	fmt.Println(tcpAddr)
 	checkError(err, "tcpAddr")
 	conn, err := net.DialTCP("tcp", nil, tcpAddr)
+	// conn, err := net.DialTimeout("tcp", service, 1*time.Second)
 	checkError(err, "conn")
+	fmt.Println(&conn, err)
 	defer conn.Close()
 	for {
-		input := scanStdin("please input calc,num1,num2, or 0 to exit \ncalc: add, sub, mult, div \nexample:add,1,1 \ninput:")
+		input := scanStdin("input:")
 		if input == "0" {
 			os.Exit(0)
 		}
 		_, err = conn.Write([]byte(input))
 		checkError(err, "conn write")
 		res := make([]byte, 1024)
+		conn.SetReadDeadline(time.Now().Add(time.Second))
 		len, err := conn.Read(res)
 		checkError(err, "conn read")
 		fmt.Println("response:", string(res[:len]))

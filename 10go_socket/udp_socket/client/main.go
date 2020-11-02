@@ -19,8 +19,8 @@ func main() {
 	defer conn.Close()
 	_, err = conn.Write([]byte("anything"))
 	checkError(err)
-	var buf []byte
-	n, err := conn.Read(buf)
+	var buf [512]byte
+	n, err := conn.Read(buf[0:])
 	checkError(err)
 	fmt.Println(string(buf[:n]))
 	os.Exit(0)

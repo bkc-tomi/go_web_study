@@ -20,10 +20,12 @@ func main() {
 
 func handleClient(conn *net.UDPConn) {
 	var buf [512]byte
-	_, addr, err := conn.ReadFromUDP(buf[0:])
+	n, addr, err := conn.ReadFromUDP(buf[0:])
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
+	fmt.Println(string(buf[:n]), addr.IP, addr.Port)
 	daytime := time.Now().String()
 	conn.WriteToUDP([]byte(daytime), addr)
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -27,7 +28,8 @@ var strB = `
 `
 
 func main() {
-	f, fOpenErr := os.Open("source/example.json")
+	readPath := filepath.Join("source", "example.json")
+	f, fOpenErr := os.Open(readPath)
 	if fOpenErr != nil {
 		fmt.Println("file open error:", fOpenErr)
 		return
@@ -52,8 +54,8 @@ func main() {
 	if err != nil {
 		fmt.Println("encode error:", err)
 	}
-
-	if err := ioutil.WriteFile("source/upperExample.json", b, 0664); err != nil {
+	writePath := filepath.Join("source", "upperExample.json")
+	if err := ioutil.WriteFile(writePath, b, 0664); err != nil {
 		fmt.Println("write file error:", err)
 
 	}
