@@ -22,6 +22,12 @@ func main() {
 	router.PathPrefix("/js/").Handler(http.StripPrefix("/js/", http.FileServer(http.Dir("static/js/"))))
 	// api
 	router.HandleFunc("/api/"+apiVersion+"/users", restapi.GetUsers).Methods("GET")
+	router.HandleFunc("/api/"+apiVersion+"/users/{id}", restapi.GetUser).Methods("GET")
+	router.HandleFunc("/api/"+apiVersion+"/search", restapi.SearchUser).Methods("GET")
+	router.HandleFunc("/api/"+apiVersion+"/users", restapi.PostUser).Methods("POST")
+	router.HandleFunc("/api/"+apiVersion+"/users/{id}", restapi.PutUser).Methods("PUT")
+	router.HandleFunc("/api/"+apiVersion+"/users/{id}", restapi.DeleteUser).Methods("DELETE")
+
 	log.Printf("Server listening on http://localhost:%s/", port)
 	log.Print(http.ListenAndServe(":"+port, router))
 }

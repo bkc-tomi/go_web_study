@@ -1,5 +1,5 @@
 const usersModule = (() => {
-    const BASE_URL = "http://localhost:59727/api/v1/users";
+    const BASE_URL = "http://localhost:58606/api/v1/users";
 
     const headers = new Headers();
     headers.set("Content-type", "application/json");
@@ -43,8 +43,8 @@ const usersModule = (() => {
                                 <td>${user.name}</td>
                                 <td>${user.profile}</td>
                                 <td>${user.date_of_birth}</td>
-                                <td>${user.created_at}</td>
-                                <td>${user.updated_at}</td>
+                                <td>${user.create_at}</td>
+                                <td>${user.update_at}</td>
                                 <td><a href="edit?uid=${user.id}">編集</a></td>
                             </tr>
                 `;
@@ -73,6 +73,7 @@ const usersModule = (() => {
         setExistingValue: async(uid) => {
             const res = await fetch(BASE_URL + "/" + uid);
             const resJson = await res.json();
+            console.log(resJson);
 
             document.getElementById("name").value = resJson.name;
             document.getElementById("profile").value = resJson.profile;
