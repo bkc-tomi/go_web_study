@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザ作成</title>
+    <!-- load script -->
+    <script src="js/search.js" defer></script>
+    <script src="js/users.js" defer></script>
+    <script src="js/index.js"defer></script>
+</head>
+<body>
+    <main>
+        <h1>ユーザ作成</h1>
+        <label for="uid">ID</label>
+        <input type="text" id="uid" placeholder="自動採番されます" disabled/>
+        <br />
+        <label for="name">ユーザ名</label>
+        <input type="text" id="name"/>
+        <br />
+        <label for="profile">プロフィール</label>
+        <input type="text" id="profile"/>
+        <br />
+        <label for="date-of-birth">誕生日</label>
+        <input type="text" id="date-of-birth"/>
+        <br />
+        <button id="save-btn">保存する</button>
+        <button id="cancel-btn">キャンセル</button>
+        <p>
+            <button id="delete-btn">削除</button>
+        </p>
+    </main>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Re:ゼロから始めるよ</title>
+    <!-- load script -->
+    <script src="/js/search.js" defer></script>
+    <script src="/js/users.js" defer></script>
+    <script src="/js/index.js"defer></script>
+</head>
+<body>
+    <main>
+        <h1>Re:ゼロから始めるユーザ管理</h1>
+        <label for="search">ユーザ名で検索</label>
+        <input type="text" id="search" />
+        <button id="search-btn">検索</button>
+        <a href="create">新規作成</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ユーザ名</th>
+                    <th>プロフィール</th>
+                    <th>誕生日</th>
+                    <th>登録日時</th>
+                    <th>更新日時</th>
+                    <th>メニュー</th>
+                </tr>
+            </thead>
+            <tbody id="users-list">
+
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

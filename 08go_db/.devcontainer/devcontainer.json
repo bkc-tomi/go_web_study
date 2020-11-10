@@ -1,0 +1,19 @@
+{
+	"name": "Existing Docker Compose (Extend)",
+
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"service": "app",
+	"workspaceFolder": "/go/src/app",
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/sh",
+        "go.gopath": "/go",
+        "go.inferGopath": true,
+        "go.useLanguageServer": true
+	},
+	"extensions": [
+		"golang.go",
+		"wholroyd.jinja"
+	]
+}

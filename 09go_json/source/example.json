@@ -1,0 +1,9 @@
+[
+    {"language": "Go", "birthyear": 2009, "character": "gopher"},
+    {"language": "JavaScript", "birthyear": 1997, "character": null},
+    {"language": "Java", "birthyear": 1995, "character":"Duke"},
+    {"language": "D", "birthyear": 2007, "character":"D-man"},
+    {"language": "PHP", "birthyear": 1995, "character":"elePHPant"},
+    {"language": "LISP", "birthyear": 1958, "character":"lien"},
+    {"language": "Python", "birthyear": 1990, "character":"python"}
+]

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRF Form</title>
+</head>
+<body>
+    <form action="/csrf" method="POST">
+        <input type="text" name="username" />
+        <textarea name="article" rows="4"></textarea>
+        <input type="hidden" name="token" value="{{.}}">
+        <input type="submit" value="送信">
+        <br />
+    </form>
+</body>
+</html>
