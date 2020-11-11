@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"go.toolsEnvVars": {
+			"GOOS": "js",
+			"GOARCH": "wasm",
+			// "GOROOT": "/usr/local/go",
+			// "GOPATH": "/home/corey/src/goprojects"
+		}
+	}
+}

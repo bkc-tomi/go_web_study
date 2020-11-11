@@ -2,7 +2,8 @@
 	<head>
 		<meta charset="utf-8"/>
 		<script src="tinywasm_exec.js"></script>
-		<script>
+		<script src="mand.js" defer></script>
+		<script defer>
             const go = new Go();
 			WebAssembly.instantiateStreaming(fetch("tinygo.wasm"), go.importObject).then((result) => {
 				go.run(result.instance);
@@ -10,6 +11,21 @@
 		</script>
 	</head>
 	<body>
-        <h1>Go WebAssembly</h1>
+		<h1>Go WebAssembly</h1>
+		
+		<input type="text" id="v1" />
+		<input type="text" id="v2" />
+		<button onclick="mult('v1', 'v2', 'result')" id="calcmult">計算</button>
+		<ul id="result">
+
+		</ul>
+
+		<h1>マンデルブローの描画</h1>
+		<button onclick="gomand()">Go webassembly</button>
+		<button onclick="jsmand()">JavaScript</button>
+		<p id="create-time"></p>
+		<canvas id="cnvs" width="400px" height="400px">
+
+		</canvas>
     </body>
 </html>
