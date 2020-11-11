@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"sync"
 	"syscall/js"
 	"time"
 )
@@ -33,7 +34,10 @@ func mult(this js.Value, args []js.Value) interface{} {
 	return nil
 }
 
-func mand(this js.Value, args []js.Value) interface{} {
+var Arr [400][400]int
+
+func gomand(this js.Value, args []js.Value) interface{} {
+	var wg sync.WaitGroup
 	canvas := js.Global().Get("document").Call("getElementById", "cnvs")
 	ctx := canvas.Call("getContext", "2d")
 	start := time.Now()
@@ -41,30 +45,20 @@ func mand(this js.Value, args []js.Value) interface{} {
 	h := 400
 	itr := 255
 	size := 3
-	var arr [400][400]int
 	for i := 0; i < w; i++ {
 		x := (float64(i)/float64(w))*float64(size) - (float64(size) / 2)
 		for j := 0; j < h; j++ {
+			wg.Add(1)
 			y := (float64(j)/float64(h))*float64(size) - (float64(size) / 2)
-			a := float64(0)
-			b := float64(0)
-			for k := 0; k <= itr; k++ {
-				aTemp := a*a - b*b + x
-				bTemp := 2*a*b + y
-				a = aTemp
-				b = bTemp
-				if a*a+b*b > 4 {
-					break
-				}
-				arr[i][j] = k
-			}
+			go mand(x, y, i, j, itr, &wg)
 		}
 	}
+	wg.Wait()
 	end := time.Now()
-
+	// fmt.Println(Arr)
 	for i := 0; i < w; i++ {
 		for j := 0; j < h; j++ {
-			l := 255 - arr[i][j]
+			l := 255 - Arr[i][j]
 			hsl := "hsl(" + strconv.Itoa(l) + ", 100%, 50%)"
 			ctx.Set("fillStyle", hsl)
 			ctx.Call("fillRect", i, j, 1, 1)
@@ -75,10 +69,26 @@ func mand(this js.Value, args []js.Value) interface{} {
 	return nil
 }
 
+func mand(x float64, y float64, i int, j int, itr int, w *sync.WaitGroup) {
+	a := float64(0)
+	b := float64(0)
+	for k := 0; k <= itr; k++ {
+		aTemp := a*a - b*b + x
+		bTemp := 2*a*b + y
+		a = aTemp
+		b = bTemp
+		if a*a+b*b > 4 {
+			break
+		}
+		Arr[i][j] = k
+	}
+	w.Done()
+}
+
 func registerCallbacks() {
 	js.Global().Set("add", js.FuncOf(add))
 	js.Global().Set("mult", js.FuncOf(mult))
-	js.Global().Set("gomand", js.FuncOf(mand))
+	js.Global().Set("gomand", js.FuncOf(gomand))
 }
 func main() {
 	// チャンネルによって永続化
